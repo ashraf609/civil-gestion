@@ -43,7 +43,7 @@
             <h6 class="collapse-header">Utilisateurs</h6>
             <a class="collapse-item" href="/client">Clients</a>
             <a class="collapse-item" href="/employeur">Employees</a>
-            <a class="collapse-item" href="/users">Admin</a>
+           
           </div>
         </div>
       </li>
@@ -61,12 +61,7 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/facture">
-          <i class="fas fa-file-invoice"></i>
-          <span>Factures</span>
-        </a>
-      </li>
+     
        <li class="nav-item">
         <a class="nav-link" href="/tache">
          <i class="fa fa-tasks"></i>
@@ -181,7 +176,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <img class="img-profile rounded-circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqzimYL8cryUexi41Y0o2AIXlbtmOvOB4bgA&s" style="max-width: 60px">
-                <span class="ml-2 d-none d-lg-inline text-white small">Nasma EL OUARDI</span>
+                <span class="ml-2 d-none d-lg-inline text-white small">Nasma OUARDI</span>
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">
@@ -203,7 +198,7 @@
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+            <h1 class="h3 mb-0 text-gray-800">Dashboard , Bienvenue Secrétaire</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
               <li class="breadcrumb-item active" aria-current="page">Dashboard</li>

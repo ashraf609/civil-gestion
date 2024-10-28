@@ -270,11 +270,7 @@ footer a {
     <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
     <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
   </div>
-  <span>or use your email for registration</span>
-  <input type="text" id="name" placeholder="Name" required />
-  <input type="email" id="email" placeholder="Email" required />
-  <input type="password" id="password" placeholder="Password" required />
-  <button type="submit">Sign Up</button>
+ 
 </form>
 
 	</div>
@@ -304,7 +300,7 @@ footer a {
 			<div class="overlay-panel overlay-right">
 				<h1>Hello, Friend!</h1>
 				<p>Enter your personal details and start journey with us</p>
-				<button class="ghost" id="signUp">Sign Up</button>
+				
 			</div>
 		</div>
 	</div>
@@ -369,55 +365,61 @@ signInButton.addEventListener('click', () => {
 
 </script>
 <script>
- document.getElementById('loginForm').addEventListener('submit', async (event) => {
-  event.preventDefault(); // Prevent the default form submission
+document.getElementById('loginForm').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent the default form submission
 
-  // Get form data
-  const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
+    // Get form data
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
 
-  // Create the data object to send
-  const data = {
-    email: email,
-    password: password
-  };
+    // Create the data object to send
+    const data = {
+        email: email,
+        password: password
+    };
 
-  try {
-    // Send data to the server
-    const response = await fetch('http://localhost:3000/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
+    try {
+        // Send data to the server
+        const response = await fetch('http://localhost:3000/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
 
-    // Handle the response
-    if (response.ok) {
-      const result = await response.json();
-      alert('Login successful!');
-      
-      // Store the token in localStorage
-      localStorage.setItem('token', result.token);
+        // Handle the response
+        if (response.ok) {
+            const result = await response.json();
+            alert('Login successful!');
 
-      // Redirect based on user role
-      if (result.role === 'admin') {
-        window.location.href = '/dashboard';
-      } else if (result.role === 'user') {
-        window.location.href = '/';
-      } else {
-        alert('Unknown role');
-      }
-    } else {
-      const error = await response.json();
-      alert(`Login failed: ${error.error}`);
+            // Store the token in localStorage
+            localStorage.setItem('token', result.token);
+
+            // Store routes and role in localStorage for frontend access control
+            localStorage.setItem('role', result.role);
+            localStorage.setItem('routes', JSON.stringify(result.routes));
+
+            // Redirect based on user role
+            if (result.role === 'admin') {
+                window.location.href = '/dashboard-admin';
+            } else if (result.role === 'Directeur') {
+                window.location.href = '/dashboard-directeur';
+            } else if (result.role === 'client') {
+                window.location.href = '/dashboard-client';
+            } else {
+                alert('Unknown role');
+            }
+        } else {
+            const error = await response.json();
+            alert(`Login failed: ${error.error}`);
+        }
+    } catch (err) {
+        console.error('Error:', err);
+        alert('An error occurred. Please try again.');
     }
-  } catch (err) {
-    console.error('Error:', err);
-    alert('An error occurred. Please try again.');
-  }
 });
-
 </script>
+
 </body>
 </html>

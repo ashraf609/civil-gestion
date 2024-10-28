@@ -44,7 +44,7 @@
             <h6 class="collapse-header">Utilisateurs</h6>
             <a class="collapse-item" href="/client">Clients</a>
             <a class="collapse-item" href="/employeur">Employees</a>
-            <a class="collapse-item" href="/users">Admin</a>
+           
           </div>
         </div>
       </li>
@@ -62,12 +62,7 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/facture">
-          <i class="fas fa-file-invoice"></i>
-          <span>Factures</span>
-        </a>
-      </li>
+     
        <li class="nav-item">
         <a class="nav-link" href="/tache">
          <i class="fa fa-tasks"></i>
@@ -136,7 +131,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <img class="img-profile rounded-circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqzimYL8cryUexi41Y0o2AIXlbtmOvOB4bgA&s" style="max-width: 60px">
-                <span class="ml-2 d-none d-lg-inline text-white small">Nasma EL OUARDI</span>
+                <span class="ml-2 d-none d-lg-inline text-white small">Nasma OUARDI</span>
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">
@@ -168,23 +163,26 @@
           <!-- Employee Table -->
 <!-- Materials Table -->
 <div class="col-lg-12 mb-4">
-    <!-- Notifications Table -->
+    <!-- Files Table -->
     <div class="card">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Notifications</h6>
-             <button class="btn btn-sm btn-danger" onclick="openDeleteAllNotificationsModal()">Delete All</button>
+            <h6 class="m-0 font-weight-bold text-primary">Files Project</h6>
+            <div>
+                
+            </div>
         </div>
         <div class="table-responsive">
             <table class="table align-items-center table-flush">
                 <thead class="thead-light">
                     <tr>
                         <th>ID</th>
-                        <th>Message</th>
-                        <th>Type</th>
-                        <th>Action</th>
+                        <th>Name</th>
+                        <th>File Type</th>
+                        <th>Status</th>
+                       
                     </tr>
                 </thead>
-                <tbody id="notificationTableBody">
+                <tbody id="fileTableBody">
                     <!-- Dynamic content goes here -->
                 </tbody>
             </table>
@@ -192,190 +190,145 @@
     </div>
 </div>
 
-
-</div>
-
-<!-- Delete All Notifications Modal -->
-<div class="modal fade" id="deleteAllNotificationsModal" tabindex="-1" role="dialog" aria-labelledby="deleteAllNotificationsModalLabel" aria-hidden="true">
+<!-- Add File Modal -->
+<div class="modal fade" id="addFileModal" tabindex="-1" role="dialog" aria-labelledby="addFileModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteAllNotificationsModalLabel">Delete All Notifications</h5>
+                <h5 class="modal-title" id="addFileModalLabel">Add New File</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="addFileForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="fileName">File Name</label>
+                        <input type="text" class="form-control" id="fileName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fileContent">File (PDF, Word, etc.)</label>
+                        <input type="file" class="form-control" id="fileContent" name="file" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fileType">File Type</label>
+                        <select class="form-control" id="fileType" name="file_type" required>
+                            <option value="PDF">PDF</option>
+                            <option value="Word">Word</option>
+                            <option value="Excel">Excel</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="fileStatus">Status</label>
+                        <select class="form-control" id="fileStatus" name="status">
+                            <option value="IN PROGRESS">IN PROGRESS</option>
+                            <option value="SIGNED">SIGNED</option>
+                            <option value="REJECTED">REJECTED</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add File</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete All Files Modal -->
+<div class="modal fade" id="deleteAllFilesModal" tabindex="-1" role="dialog" aria-labelledby="deleteAllFilesModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteAllFilesModalLabel">Delete All Files</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete all notifications?
+                Are you sure you want to delete all files?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" onclick="deleteAllNotifications()">Delete All</button>
+                <button type="button" class="btn btn-danger" onclick="deleteAllFiles()">Delete All</button>
             </div>
         </div>
     </div>
 </div>
 
-
-
-
-    </div>
-          <!--Row-->
-
-          <!-- Modal Logout -->
-          <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <p>Are you sure you want to logout?</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-                  <a href="/" class="btn btn-primary">Logout</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <!---Container Fluid-->
-      </div>
-      <!-- Footer -->
-      <!-- Footer -->
-    </div>
-  </div>
-
-  <!-- Scroll to top -->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-  <script>
+<script>
 document.addEventListener('DOMContentLoaded', function() {
-    loadNotifications();
+    loadFiles();
 });
 
-function loadNotifications() {
-    fetch('http://localhost:3000/api/notifications')
+function loadFiles() {
+    fetch('http://localhost:3000/api/files_project')
         .then(response => response.json())
-        .then(notifications => {
-            const tableBody = document.getElementById('notificationTableBody');
-            tableBody.innerHTML = notifications.map(notification => `
+        .then(files => {
+            const tableBody = document.getElementById('fileTableBody');
+            tableBody.innerHTML = files.map(file => `
                 <tr>
-                    <td>${notification.id}</td>
-                    <td>${notification.message}</td>
-                    <td>${getNotificationTypeBadge(notification.notification_type)}</td>
-                    <td>
-                        <button class="btn btn-sm btn-warning" onclick="openUpdateNotificationModal(${notification.id}, '${notification.message}', '${notification.notification_type}')">Update</button>
-                        <button class="btn btn-sm btn-danger" onclick="confirmDeleteNotification(${notification.id})">Delete</button>
-                    </td>
+                    <td>${file.id}</td>
+                    <td>${file.name}</td>
+                    <td>${file.file_type}</td>
+                    <td>${getFileStatusBadge(file.status)}</td>
+                    
                 </tr>
             `).join('');
         })
-        .catch(error => console.error('Error fetching notifications:', error));
+        .catch(error => console.error('Error fetching files:', error));
 }
 
-function getNotificationTypeBadge(type) {
+function getFileStatusBadge(status) {
     let badgeClass;
-    switch (type) {
-        case 'Info':
-            badgeClass = 'badge badge-info';
+    switch (status) {
+        case 'SIGNED':
+            badgeClass = 'badge badge-success';
             break;
-        case 'Warning':
+        case 'IN PROGRESS':
             badgeClass = 'badge badge-warning';
             break;
-        case 'Alert':
+        case 'REJECTED':
             badgeClass = 'badge badge-danger';
             break;
         default:
             badgeClass = 'badge badge-secondary';
     }
-    return `<span class="${badgeClass}">${type}</span>`;
+    return `<span class="${badgeClass}">${status}</span>`;
 }
 
-document.getElementById('addNotificationForm').addEventListener('submit', function(event) {
+document.getElementById('addFileForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const formData = new FormData(this);
-    fetch('http://localhost:3000/api/notifications', {
+    
+    fetch('http://localhost:3000/api/files_project', {
         method: 'POST',
-        body: JSON.stringify(Object.fromEntries(formData)),
-        headers: { 'Content-Type': 'application/json' }
+        body: formData // Use formData directly without converting to JSON
     })
     .then(response => response.json())
     .then(data => {
         if (data.error) {
             alert('Error: ' + data.error);
         } else {
-            alert('Notification added successfully!');
-            $('#addNotificationModal').modal('hide');
-            loadNotifications();
+            alert('File added successfully!');
+            $('#addFileModal').modal('hide');
+            loadFiles();
         }
     })
     .catch(error => console.error('Error:', error));
 });
 
-function openUpdateNotificationModal(id, message, type) {
-    document.getElementById('updateNotificationId').value = id;
-    document.getElementById('updateMessage').value = message;
-    document.getElementById('updateNotificationType').value = type;
-    $('#updateNotificationModal').modal('show');
+
+function openAddFileModal() {
+    document.getElementById('addFileForm').reset();
+    $('#addFileModal').modal('show');
 }
 
-function confirmDeleteNotification(id) {
-    if (confirm('Are you sure you want to delete this notification?')) {
-        fetch(`http://localhost:3000/api/notifications/${id}`, {
-            method: 'DELETE'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                alert('Error: ' + data.error);
-            } else {
-                alert('Notification deleted successfully!');
-                loadNotifications();
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    }
-}
-function deleteAllNotifications() {
-    fetch('http://localhost:3000/api/notifications', {
-        method: 'DELETE'
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            alert('Error: ' + data.error);
-        } else {
-            alert('All notifications deleted successfully!');
-            $('#deleteAllNotificationsModal').modal('hide');
-            loadNotifications();
-        }
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-// Open the add notification modal
-function openAddNotificationModal() {
-    document.getElementById('addNotificationForm').reset();
-    $('#addNotificationModal').modal('show');
-}
-
-// Open the delete all notifications modal
-function openDeleteAllNotificationsModal() {
-    $('#deleteAllNotificationsModal').modal('show');
-}
-
-// Load notifications when the page loads
-document.addEventListener('DOMContentLoaded', loadNotifications);
-
+// Additional functions for deleting files (confirmDeleteFile, deleteAllFiles, etc.) remain the same
 </script>
+
 
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

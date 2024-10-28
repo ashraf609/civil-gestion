@@ -62,7 +62,7 @@
             <h6 class="collapse-header">Utilisateurs</h6>
             <a class="collapse-item" href="/client">Clients</a>
             <a class="collapse-item" href="/employeur">Employees</a>
-            <a class="collapse-item" href="/users">Admin</a>
+           
           </div>
         </div>
       </li>
@@ -80,12 +80,7 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/facture">
-          <i class="fas fa-file-invoice"></i>
-          <span>Factures</span>
-        </a>
-      </li>
+     
        <li class="nav-item">
         <a class="nav-link" href="/tache">
          <i class="fa fa-tasks"></i>
@@ -154,7 +149,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <img class="img-profile rounded-circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqzimYL8cryUexi41Y0o2AIXlbtmOvOB4bgA&s" style="max-width: 60px">
-                <span class="ml-2 d-none d-lg-inline text-white small">Nasma EL OUARDI</span>
+                <span class="ml-2 d-none d-lg-inline text-white small">Nasma OUARDI</span>
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">
@@ -245,12 +240,7 @@
             <input type="date" class="form-control" id="projectEndDate" name="end_date">
           </div>
          <div class="form-group">
-  <label for="projectStatus">Status</label>
-  <select class="form-control" id="projectStatus" name="status" required>
-    <option value="In Progress">In Progress</option>
-    <option value="Completed">Completed</option>
-    <option value="Incompleted">Incompleted</option>
-  </select>
+ 
 </div>
           <button type="submit" class="btn btn-primary">Add Project</button>
         </form>
@@ -295,12 +285,7 @@
             <input type="date" class="form-control" id="updateProjectEndDate" name="end_date">
           </div>
          <div class="form-group">
-  <label for="updateProjectStatus">Status</label>
-  <select class="form-control" id="updateProjectStatus" name="status" required>
-    <option value="In Progress">In Progress</option>
-    <option value="Completed">Completed</option>
-    <option value="Incompleted">Incompleted</option>
-  </select>
+  
 </div>
           <button type="submit" class="btn btn-primary">Update Project</button>
         </form>
@@ -498,7 +483,7 @@
     </span>
   </td>
   <td>
-    <button class="btn btn-sm btn-warning" onclick="openUpdateProjectModal(${project.id}, '${project.client_id}', '${project.name}', '${project.description}', '${project.start_date}', '${project.end_date}', '${project.status}')">Update</button>
+    <button class="btn btn-sm btn-warning" onclick="openUpdateProjectModal(${project.id}, '${project.client_id}', '${project.name}', '${project.description}', '${project.start_date}', '${project.end_date}')">Update</button>
     <button class="btn btn-sm btn-danger" onclick="openDeleteProjectModal(${project.id})">Delete</button>
   </td>
 </tr>
@@ -589,7 +574,7 @@
     document.getElementById('updateProjectDescription').value = description;
     document.getElementById('updateProjectStartDate').value = startDate;
     document.getElementById('updateProjectEndDate').value = endDate;
-    document.getElementById('updateProjectStatus').value = status;
+ 
     $('#updateProjectModal').modal('show');
   }
 

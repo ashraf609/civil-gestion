@@ -11,13 +11,14 @@ app.use(cors());
 
 // Middleware to parse JSON bodies
 app.use(express.json());
-
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() }); // Stores file in memory as a buffer
 // MySQL connection configuration
 const connection = mysql.createConnection({
     host: "localhost", // Update with your MySQL host
     user: "root", // Update with your MySQL username
     password: "", // Update with your MySQL password
-    database: "civil", // Update with your MySQL database name
+    database: "civ", // Update with your MySQL database name
 });
 
 // Connect to MySQL
@@ -101,10 +102,54 @@ app.post("/api/login", (req, res) => {
                 { expiresIn: "1h" }
             );
 
-            res.json({ token, role: user.role }); // Return role along with token
+            // Define role-based routes
+            const routesByRole = {
+                client: [
+                    "/dashboard-client",
+                    "/client-client",
+                    "/demande_de_projet-client",
+                    "/projet-client",
+                    "/employeur-client",
+                    "/facture-client",
+                    "/matriel-client",
+                    "/notifications-client",
+                    "/tache-client",
+                    "/users-client",
+                ],
+                Directeur: [
+                    "/dashboard-directeur",
+                    "/client-directeur",
+                    "/demande_de_projet-directeur",
+                    "/projet-directeur",
+                    "/employeur-directeur",
+                    "/facture-directeur",
+                    "/matriel-directeur",
+                    "/notifications-directeur",
+                    "/tache-directeur",
+                    "/users-directeur",
+                ],
+                admin: [
+                    "/dashboard-admin",
+                    "/client",
+                    "/demande_de_projet-admin",
+                    "/projet-admin",
+                    "/employeur-admin",
+                    "/facture-admin",
+                    "/matriel-admin",
+                    "/notifications-admin",
+                    "/tache-admin",
+                    "/users-admin",
+                ],
+            };
+
+            // Get the routes for the user's role
+            const userRoutes = routesByRole[user.role] || [];
+
+            res.json({ token, role: user.role, routes: userRoutes }); // Return token, role, and role-specific routes
         }
     );
 });
+
 app.get("/api/users", (req, res) => {
     connection.query("SELECT id, name FROM user", (err, results) => {
         if (err) {
@@ -690,70 +735,142 @@ app.delete("/api/invoices/:id", (req, res) => {
     );
 });
 //=================================== Notifications =================================================
-app.post("/api/notifications", (req, res) => {
-    const { message, notification_type } = req.body;
+// Add a new file to files_project
+// Add a new file to files_project
+app.post("/api/files_project", upload.single("file"), (req, res) => {
+    const { name, file_type } = req.body;
+    const file = req.file ? req.file.buffer : null; // Access file data from multer
+    const status = "IN PROGRESS"; // Default status
 
-    if (!message) {
-        return res.status(400).json({ error: "Message is required" });
+    if (!name || !file || !file_type) {
+        return res
+            .status(400)
+            .json({ error: "Name, file, and file type are required" });
     }
 
     connection.query(
-        "INSERT INTO notifications (message, notification_type) VALUES (?, ?)",
-        [message, notification_type],
+        "INSERT INTO files_project (name, file, file_type, status) VALUES (?, ?, ?, ?)",
+        [name, file, file_type, status],
         (err, results) => {
             if (err) {
                 return res
                     .status(500)
-                    .json({ error: "Error creating notification" });
+                    .json({ error: "Error creating file entry" });
             }
             res.status(201).json({
-                message: "Notification created successfully",
-                notificationId: results.insertId,
+                message: "File added successfully",
+                fileId: results.insertId,
             });
         }
     );
 });
-app.get("/api/notifications", (req, res) => {
-    connection.query("SELECT * FROM notifications", (err, results) => {
+
+// Get all files from files_project
+app.get("/api/files_project", (req, res) => {
+    connection.query("SELECT * FROM files_project", (err, results) => {
         if (err) {
-            return res
-                .status(500)
-                .json({ error: "Error fetching notifications" });
+            return res.status(500).json({ error: "Error fetching files" });
         }
         res.json(results);
     });
 });
-app.get("/api/notifications/:id", (req, res) => {
-    const notificationId = req.params.id;
+// Update a file by ID in files_project
+app.put("/api/files_project/:id", upload.single("file"), (req, res) => {
+    const fileId = req.params.id;
+    const { name, file_type, status } = req.body;
+    const file = req.file ? req.file.buffer : null; // Access file data from multer
+
+    if (!name && !file_type && !status && !file) {
+        return res.status(400).json({ error: "No fields to update" });
+    }
+
+    // Dynamically build the query based on provided fields
+    let query = "UPDATE files_project SET ";
+    const fields = [];
+    const values = [];
+
+    if (name) {
+        fields.push("name = ?");
+        values.push(name);
+    }
+    if (file_type) {
+        fields.push("file_type = ?");
+        values.push(file_type);
+    }
+    if (status) {
+        fields.push("status = ?");
+        values.push(status);
+    }
+    if (file) {
+        fields.push("file = ?");
+        values.push(file);
+    }
+    query += fields.join(", ") + " WHERE id = ?";
+    values.push(fileId);
+
+    connection.query(query, values, (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: "Error updating file entry" });
+        }
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ error: "File not found" });
+        }
+        res.json({ message: "File updated successfully" });
+    });
+});
+
+// Get a single file by ID from files_project
+
+// Delete all files from files_project
+app.delete("/api/files_project", (req, res) => {
+    connection.query("DELETE FROM files_project", (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: "Error deleting files" });
+        }
+        res.json({ message: "All files deleted successfully" });
+    });
+});
+app.get("/api/files_project/:id/download", (req, res) => {
+    const fileId = req.params.id;
 
     connection.query(
-        "SELECT * FROM notifications WHERE id = ?",
-        [notificationId],
+        "SELECT name, file, file_type FROM files_project WHERE id = ?",
+        [fileId],
         (err, results) => {
-            if (err) {
-                return res
-                    .status(500)
-                    .json({ error: "Error fetching notification" });
+            if (err || results.length === 0) {
+                return res.status(500).json({ error: "Error fetching file" });
             }
-            if (results.length === 0) {
-                return res
-                    .status(404)
-                    .json({ error: "Notification not found" });
-            }
-            res.json(results[0]);
+
+            const file = results[0];
+            res.setHeader(
+                "Content-Disposition",
+                `attachment; filename=${file.name}`
+            );
+            res.setHeader("Content-Type", `application/octet-stream`);
+            res.send(file.file);
         }
     );
 });
-app.delete("/api/notifications", (req, res) => {
-    connection.query("DELETE FROM notifications", (err, results) => {
-        if (err) {
-            return res
-                .status(500)
-                .json({ error: "Error deleting notifications" });
+
+// Delete a single file by ID from files_project
+app.delete("/api/files_project/:id", (req, res) => {
+    const fileId = req.params.id;
+
+    connection.query(
+        "DELETE FROM files_project WHERE id = ?",
+        [fileId],
+        (err, results) => {
+            if (err) {
+                return res.status(500).json({ error: "Error deleting file" });
+            }
+            if (results.affectedRows === 0) {
+                return res.status(404).json({ error: "File not found" });
+            }
+            res.json({ message: "File deleted successfully" });
         }
-        res.json({ message: "All notifications deleted successfully" });
-    });
+    );
 });
+
 //=================================== Projet Request =================================================
 app.post("/api/project_requests", (req, res) => {
     const { user_id, request_date, project_name, project_description, status } =
@@ -868,6 +985,110 @@ app.delete("/api/project_requests/:id", (req, res) => {
         }
     );
 });
+//================================================================//
+app.post("/api/rendez_vous", (req, res) => {
+    const { client_id, date, time, location, status, notes } = req.body;
+
+    if (!client_id || !date || !time) {
+        return res
+            .status(400)
+            .json({ error: "Client ID, date, and time are required" });
+    }
+
+    connection.query(
+        "INSERT INTO rendez_vous (client_id, date, time, location, status, notes) VALUES (?, ?, ?, ?, ?, ?)",
+        [client_id, date, time, location, status || "SCHEDULED", notes],
+        (err, results) => {
+            if (err) {
+                return res
+                    .status(500)
+                    .json({ error: "Error creating rendez-vous" });
+            }
+            res.status(201).json({
+                message: "Rendez-vous created successfully",
+                rendezVousId: results.insertId,
+            });
+        }
+    );
+});
+
+// Retrieve all rendez-vous
+app.get("/api/rendez_vous", (req, res) => {
+    connection.query("SELECT * FROM rendez_vous", (err, results) => {
+        if (err) {
+            return res
+                .status(500)
+                .json({ error: "Error fetching rendez-vous" });
+        }
+        res.json(results);
+    });
+});
+
+// Retrieve a single rendez-vous by ID
+app.get("/api/rendez_vous/:id", (req, res) => {
+    const rendezVousId = req.params.id;
+
+    connection.query(
+        "SELECT * FROM rendez_vous WHERE id = ?",
+        [rendezVousId],
+        (err, results) => {
+            if (err) {
+                return res
+                    .status(500)
+                    .json({ error: "Error fetching rendez-vous" });
+            }
+            if (results.length === 0) {
+                return res.status(404).json({ error: "Rendez-vous not found" });
+            }
+            res.json(results[0]);
+        }
+    );
+});
+
+// Update a rendez-vous by ID
+app.put("/api/rendez_vous/:id", (req, res) => {
+    const rendezVousId = req.params.id;
+    const { client_id, date, time, location, status, notes } = req.body;
+
+    connection.query(
+        "UPDATE rendez_vous SET client_id = ?, date = ?, time = ?, location = ?, status = ?, notes = ? WHERE id = ?",
+        [client_id, date, time, location, status, notes, rendezVousId],
+        (err, results) => {
+            if (err) {
+                return res
+                    .status(500)
+                    .json({ error: "Error updating rendez-vous" });
+            }
+            if (results.affectedRows === 0) {
+                return res.status(404).json({ error: "Rendez-vous not found" });
+            }
+            res.json({ message: "Rendez-vous updated successfully" });
+        }
+    );
+});
+
+// Delete a rendez-vous by ID
+app.delete("/api/rendez_vous/:id", (req, res) => {
+    const rendezVousId = req.params.id;
+
+    connection.query(
+        "DELETE FROM rendez_vous WHERE id = ?",
+        [rendezVousId],
+        (err, results) => {
+            if (err) {
+                return res
+                    .status(500)
+                    .json({ error: "Error deleting rendez-vous" });
+            }
+            if (results.affectedRows === 0) {
+                return res.status(404).json({ error: "Rendez-vous not found" });
+            }
+            res.json({ message: "Rendez-vous deleted successfully" });
+        }
+    );
+});
+
+// S
 
 // Start the server
 app.listen(port, () => {

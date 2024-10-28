@@ -44,7 +44,7 @@
             <h6 class="collapse-header">Utilisateurs</h6>
             <a class="collapse-item" href="/client">Clients</a>
             <a class="collapse-item" href="/employeur">Employees</a>
-            <a class="collapse-item" href="/users">Admin</a>
+           
           </div>
         </div>
       </li>
@@ -62,12 +62,7 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/facture">
-          <i class="fas fa-file-invoice"></i>
-          <span>Factures</span>
-        </a>
-      </li>
+     
        <li class="nav-item">
         <a class="nav-link" href="/tache">
          <i class="fa fa-tasks"></i>
@@ -136,7 +131,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <img class="img-profile rounded-circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqzimYL8cryUexi41Y0o2AIXlbtmOvOB4bgA&s" style="max-width: 60px">
-                <span class="ml-2 d-none d-lg-inline text-white small">Nasma EL OUARDI</span>
+                <span class="ml-2 d-none d-lg-inline text-white small">Nasma OUARDI</span>
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">
@@ -172,7 +167,7 @@
   <div class="card">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
       <h6 class="m-0 font-weight-bold text-primary">Materials Table</h6>
-      <button class="btn btn-primary" data-toggle="modal" data-target="#addMaterialModal">Add Material</button>
+      
     </div>
     <div class="table-responsive">
       <table class="table align-items-center table-flush">
@@ -184,7 +179,7 @@
             <th>Unit Price</th>
             <th>Supplier</th>
             <th>Image</th>
-            <th>Action</th>
+          
           </tr>
         </thead>
         <tbody id="materialTableBody">
@@ -419,10 +414,7 @@ function loadMaterials() {
             <td>${material.unit_price}</td>
             <td>${material.supplier}</td>
             <td><img src="${material.image}" alt="${material.name}" style="width: 50px; height: auto;"></td>
-            <td>
-              <button class="btn btn-sm btn-warning" onclick="openUpdateMaterialModal(${material.id}, '${material.name}', '${material.quantity}', '${material.unit_price}', '${material.supplier}', '${material.image}')">Update</button>
-              <button class="btn btn-sm btn-danger" onclick="openDeleteMaterialModal(${material.id})">Delete</button>
-            </td>
+            
           </tr>
         `;
       });

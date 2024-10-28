@@ -209,15 +209,15 @@
   <div class="footer-legal text-center position-relative">
     <div class="container">
       <div class="copyright">
-        &copy; Copyright <strong><span>Nasma EL OUARDI</span></strong>. Tous droits réservés
+        &copy; Copyright <strong><span>Nasma OUARDI</span></strong>. Tous droits réservés
       </div>
       <div class="credits">
         <!-- Tous les liens dans le pied de page doivent rester intacts. -->
         <!-- Vous pouvez supprimer les liens uniquement si vous avez acheté la version pro. -->
         <!-- Informations sur la licence : https://bootstrapmade.com/license/ -->
         <!-- Achetez la version pro avec un formulaire de contact PHP/AJAX fonctionnel : https://bootstrapmade.com/upconstruction-bootstrap-construction-website-template/ -->
-        Conçu par <a href="https://bootstrapmade.com/">Nasma EL OUARDI</a> Distribué par <a
-          href="https://themewagon.com">Nasma EL OUARDI</a>
+        Conçu par <a href="https://bootstrapmade.com/">Nasma OUARDI</a> Distribué par <a
+          href="https://themewagon.com">Nasma OUARDI</a>
       </div>
     </div>
   </div>

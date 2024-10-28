@@ -44,7 +44,7 @@
             <h6 class="collapse-header">Utilisateurs</h6>
             <a class="collapse-item" href="/client">Clients</a>
             <a class="collapse-item" href="/employeur">Employees</a>
-            <a class="collapse-item" href="/users">Admin</a>
+           
           </div>
         </div>
       </li>
@@ -62,12 +62,7 @@
           </div>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/facture">
-          <i class="fas fa-file-invoice"></i>
-          <span>Factures</span>
-        </a>
-      </li>
+     
        <li class="nav-item">
         <a class="nav-link" href="/tache">
          <i class="fa fa-tasks"></i>
@@ -136,7 +131,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <img class="img-profile rounded-circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqzimYL8cryUexi41Y0o2AIXlbtmOvOB4bgA&s" style="max-width: 60px">
-                <span class="ml-2 d-none d-lg-inline text-white small">Nasma EL OUARDI</span>
+                <span class="ml-2 d-none d-lg-inline text-white small">Nasma OUARDI</span>
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">
@@ -221,14 +216,7 @@
                         <label for="projectDescription">Project Description</label>
                         <textarea class="form-control" id="projectDescription" name="project_description"></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select id="status" name="status" class="form-control" required>
-                            <option value="Pending">Pending</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Rejected">Rejected</option>
-                        </select>
-                    </div>
+                   
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -269,14 +257,7 @@
                         <label for="updateProjectDescription">Project Description</label>
                         <textarea class="form-control" id="updateProjectDescription" name="project_description"></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="updateStatus">Status</label>
-                        <select id="updateStatus" name="status" class="form-control" required>
-                            <option value="Pending">Pending</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Rejected">Rejected</option>
-                        </select>
-                    </div>
+                   
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -367,7 +348,7 @@
                             <td>${request.project_description}</td>
                             <td>${getStatusBadge(request.status)}</td>
                             <td>
-                                <button class="btn btn-sm btn-warning" onclick="openUpdateProjectRequestModal(${request.id}, '${request.user_id}', '${request.request_date}', '${request.project_name}', '${request.project_description}', '${request.status}')">Update</button>
+                                <button class="btn btn-sm btn-warning" onclick="openUpdateProjectRequestModal(${request.id}, '${request.user_id}', '${request.request_date}', '${request.project_name}', '${request.project_description}')">Update</button>
                                 <button class="btn btn-sm btn-danger" onclick="openDeleteProjectRequestModal(${request.id})">Delete</button>
                             </td>
                         </tr>`;
@@ -434,7 +415,7 @@
         document.getElementById('updateRequestDate').value = requestDate;
         document.getElementById('updateProjectName').value = projectName;
         document.getElementById('updateProjectDescription').value = projectDescription;
-        document.getElementById('updateStatus').value = status;
+      
 
         $('#updateProjectRequestModal').modal('show');
     }
